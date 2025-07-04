@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoodVilla Menu</title>
+  <link rel="stylesheet" href="restaurant.css" />
+  <script defer src="restaurant.js"></script>
+  
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+<nav class="navbar">
+      <a href="index.html" class="logo">🍽️ X-Cart</a>
+      <div class="search-center">
+        <div id="search-wrapper">
+          <i class="search-icon fas fa-search"></i>
+          <input type="text" id="search" placeholder="Search" />
+          <button id="search-button">Search</button>
+        </div>
+        <p id="no-result" style="display: none; color: red; margin-top: 8px;">No product found.</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" id="addressNavv">Address</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="tel:+917019201902" class="call-btn"><i class="fas fa-phone-alt"></i> Call</a></li>
+       <li><a href="#" id="logoutLink" class="logout-btn">Logout</a></li>
+      </ul>
+      <div class="hamburger">&#9776;</div>
+  </nav>
+
+
+  
+  <!-- Category Bar -->
+  <div class="category-bar">
+    <button data-target="Instant-Meal">Instant-Meal</button>
+    <button data-target="biryani">Fruits</button>
+    <button data-target="beverages">Vegetable</button>
+    <button data-target="desserts">Desserts</button>
+  </div>
+
+<p id="noResults" style="text-align:center; display:none; color: #999; margin-top: 20px;">
+  😕 No items matched your search.
+</p>
+
+
+  <!-- Sections -->
+  <div id="Instant-Meal" class="menu-section">
+    <h2>Instant-Meal</h2>
+    <div class="products-grid">
+      <div class="product-card" data-name="Butter Chicken" data-price="149">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Butter Chicken">❤️</span>
+  <img src="images/Chicken-Puff-.jpg" alt="Butter Chicken">
+  <div class="content">
+    <h3>Chicken-Puff</h3>
+    <p>Want so relationship season amount.</p>
+    <div class="price">₹149</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Dal Makhani" data-price="149">
+  <span class="favorite" data-name="Dal Makhani">❤️</span>
+  <img src="images/Samosa-2-Pieces.jpg" alt="Dal Makhani">
+  <div class="content">
+    <h3>Samosa</h3>
+    <p>Conference father mouth worry become.</p>
+    <div class="price">₹149</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Palak Paneer" data-price="179">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Palak Paneer">❤️</span>
+  <img src="images/Plain-Maggi-.jpg" alt="Palak Paneer">
+  <div class="content">
+    <h3>Maggi</h3>
+    <p>Moment public heart offer hard increase appear today.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Kadai Paneer" data-price="99">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Kadai Paneer">❤️</span>
+  <img src="images/Tandoori-Naan.jpg" alt="Kadai Paneer">
+  <div class="content">
+    <h3>Tandoori-Naan</h3>
+    <p>Financial she sister tonight sound record mouth president operation.</p>
+    <div class="price">₹99</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+    
+  </div>
+
+  <div id="biryani" class="menu-section">
+    <h2>Fruits</h2>
+    <div class="products-grid">
+      <div class="product-card" data-name="Veg Biryani" data-price="199">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Veg Biryani">❤️</span>
+  <img src="images/Apple-Royal-Gala.jpg" alt="Veg Biryani">
+  <div class="content">
+    <h3>Royal-Apple</h3>
+    <p>List large allow thank state professional report cold.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Chicken Biryani" data-price="149">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Chicken Biryani">❤️</span>
+  <img src="images/Avocado-Hass-Imported.jpg" alt="Chicken Biryani">
+  <div class="content">
+    <h3>Avocado</h3>
+    <p>Each at including artist we.</p>
+    <div class="price">₹149</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Mutton Biryani" data-price="199">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Mutton Biryani">❤️</span>
+  <img src="images/Baby-Orange.jpg" alt="Mutton Biryani">
+  <div class="content">
+    <h3>Orange</h3>
+    <p>Task language sure station position field tax well although head.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Egg Biryani" data-price="179">
+  <span class="favorite" data-name="Egg Biryani">❤️</span>
+  <img src="images/Watermelon-Kiran-Tarbooj-.jpg" alt="Egg Biryani">
+  <div class="content">
+    <h3>Watermelon</h3>
+    <p>Attorney quickly Congress cover upon game available eat sound.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Hyderabadi Biryani" data-price="199">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Hyderabadi Biryani">❤️</span>
+  <img src="images/Dragon-Fruit-Imported.jpg" alt="Hyderabadi Biryani">
+  <div class="content">
+    <h3>Dragon-Fruit</h3>
+    <p>Discuss senior piece everybody bank recent person.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Dum Biryani" data-price="129">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Dum Biryani">❤️</span>
+  <img src="images/Grapes-Green-Seedless-500-g-Combo.jpg" alt="Dum Biryani">
+  <div class="content">
+    <h3>Grapes</h3>
+    <p>Pick according eat scene model cover front pick chance.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Paneer Biryani" data-price="199">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Paneer Biryani">❤️</span>
+  <img src="images/Litchi-Muzaffarpur.jpg" alt="Paneer Biryani">
+  <div class="content">
+    <h3>Litchi</h3>
+    <p>Create happy exist air offer.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Kebab Biryani" data-price="129">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Kebab Biryani">❤️</span>
+  <img src="images/Pineapple.jpg" alt="Kebab Biryani">
+  <div class="content">
+    <h3>Pineapple</h3>
+    <p>Republican say property either beat in.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Sindhi Biryani" data-price="99">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Sindhi Biryani">❤️</span>
+  <img src="images/Mango-Badami.jpg" alt="Sindhi Biryani">
+  <div class="content">
+    <h3>Mango</h3>
+    <p>Need skin hundred interest kind deep television according third maybe.</p>
+    <div class="price">₹99</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Kofta Biryani" data-price="99">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Kofta Biryani">❤️</span>
+  <img src="images/Pomegranate.jpg" alt="Kofta Biryani">
+  <div class="content">
+    <h3>Pomegranate</h3>
+    <p>Human interview southern various ago town with heart Congress.</p>
+    <div class="price">₹99</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+    </div>
+    
+  </div>
+<!-- vegetable -->
+  <div id="beverages" class="menu-section">
+    <h2>Vegetable</h2>
+    <div class="products-grid">
+      <div class="product-card" data-name="Masala Chai" data-price="219">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Masala Chai">❤️</span>
+  <img src="images/Fresh-Onion.jpg" alt="Masala Chai">
+  <div class="content">
+    <h3>Onion</h3>
+    <p>Bed door hear many guy allow season.</p>
+    <div class="price">₹219</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Cold Coffee" data-price="129">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Cold Coffee">❤️</span>
+  <img src="images/Beetroot.jpg" alt="Cold Coffee">
+  <div class="content">
+    <h3>Beetroot</h3>
+    <p>Bad top foreign remain sea.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Lemonade" data-price="199">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Lemonade">❤️</span>
+  <img src="images/Cauliflower.jpg" alt="Lemonade">
+  <div class="content">
+    <h3>Cauliflower</h3>
+    <p>Anything evidence the other catch model.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Lassi" data-price="199">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Lassi">❤️</span>
+  <img src="images/Fresh-Potato.jpg" alt="Lassi">
+  <div class="content">
+    <h3>Potato</h3>
+    <p>Relate draw first return early.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Filter Coffee" data-price="129">
+  <span class="favorite" data-name="Filter Coffee">❤️</span>
+  <img src="images/Lady-Finger.jpg" alt="Filter Coffee">
+  <div class="content">
+    <h3>Lady-Finger</h3>
+    <p>That nation political truth blood life resource.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Mojito" data-price="179">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Mojito">❤️</span>
+  <img src="images/Sweet-Corn.jpg" alt="Mojito">
+  <div class="content">
+    <h3>Sweet-Corn</h3>
+    <p>Behind their right produce account adult citizen.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Smoothie" data-price="179">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Smoothie">❤️</span>
+  <img src="images/Tomato-Local.jpg" alt="Smoothie">
+  <div class="content">
+    <h3>Tomato</h3>
+    <p>Put behind begin media do property western firm cause movie.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Mango Shake" data-price="129">
+  <span class="favorite" data-name="Mango Shake">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?mango+shake" alt="Mango Shake">
+  <div class="content">
+    <h3>Mango Shake</h3>
+    <p>Important use size instead cause by world after.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Banana Shake" data-price="149">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Banana Shake">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?banana+shake" alt="Banana Shake">
+  <div class="content">
+    <h3>Banana Shake</h3>
+    <p>Travel pattern class more place take up money speak pay.</p>
+    <div class="price">₹149</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Iced Tea" data-price="129">
+  <span class="favorite" data-name="Iced Tea">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?iced+tea" alt="Iced Tea">
+  <div class="content">
+    <h3>Iced Tea</h3>
+    <p>Science how grow try beyond.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+    </div>
+    
+  </div>
+
+  <div id="desserts" class="menu-section">
+    <h2>Desserts</h2>
+    <div class="products-grid">
+      <div class="product-card" data-name="Gulab Jamun" data-price="129">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Gulab Jamun">❤️</span>
+  <img src="images/Choco-Chip-Muffins.jpg" alt="Gulab Jamun">
+  <div class="content">
+    <h3>Gulab Jamun</h3>
+    <p>Receive dark everyone among quickly the former take.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Rasgulla" data-price="149">
+  <span class="favorite" data-name="Rasgulla">❤️</span>
+  <img src="images/str.jpg" alt="Rasgulla">
+  <div class="content">
+    <h3>Rasgulla</h3>
+    <p>Again feeling bit reach item from wait include.</p>
+    <div class="price">₹149</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Ice Cream" data-price="99">
+  <span class="favorite" data-name="Ice Cream">❤️</span>
+  <img src="images/WBN-Mixed-Berry-Collagen-Cooler-.jpg" alt="Ice Cream">
+  <div class="content">
+    <h3>Ice Cream</h3>
+    <p>Personal oil that dark which enjoy.</p>
+    <div class="price">₹99</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Kheer" data-price="179">
+  <span class="favorite" data-name="Kheer">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?kheer" alt="Kheer">
+  <div class="content">
+    <h3>Kheer</h3>
+    <p>Give open example business book.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Halwa" data-price="129">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Halwa">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?halwa" alt="Halwa">
+  <div class="content">
+    <h3>Halwa</h3>
+    <p>Economy free trade million traditional reason single home.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Chocolate Cake" data-price="129">
+  <span class='tags'>🔥 Spicy</span>
+  <span class="favorite" data-name="Chocolate Cake">❤️</span>
+  <img src="images/WBN-Mint-Lemonade-Collagen-Cooler-.jpg" alt="Chocolate Cake">
+  <div class="content">
+    <h3>Chocolate Cake</h3>
+    <p>Beyond such compare such figure reality above worker consider eye.</p>
+    <div class="price">₹129</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Brownie" data-price="179">
+  <span class="favorite" data-name="Brownie">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?brownie" alt="Brownie">
+  <div class="content">
+    <h3>Brownie</h3>
+    <p>Kitchen over economic drug special probably.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Pastry" data-price="199">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Pastry">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?pastry" alt="Pastry">
+  <div class="content">
+    <h3>Pastry</h3>
+    <p>Job certainly model machine hour.</p>
+    <div class="price">₹199</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Jalebi" data-price="219">
+  <span class='tags'>⭐ New</span>
+  <span class="favorite" data-name="Jalebi">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?jalebi" alt="Jalebi">
+  <div class="content">
+    <h3>Jalebi</h3>
+    <p>Argue model law old world difficult threat on.</p>
+    <div class="price">₹219</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="product-card" data-name="Rabri" data-price="179">
+  <span class='tags'>💥 Bestseller</span>
+  <span class="favorite" data-name="Rabri">❤️</span>
+  <img src="https://source.unsplash.com/300x200/?rabri" alt="Rabri">
+  <div class="content">
+    <h3>Rabri</h3>
+    <p>Do expert health company again physical Republican.</p>
+    <div class="price">₹179</div>
+    <button class="add-btn">Add to Cart</button>
+    <div class="qty-controls" style="display: none;">
+      <button class="qty-decrease">-</button>
+      <span class="qty">1</span>
+      <button class="qty-increase">+</button>
+    </div>
+  </div>
+</div>
+    </div>
+   
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 X-Cart FoodVilla | Designed with ❤️ By Kavin Raja</p>
+  </footer>
+
+</body>
+</html>

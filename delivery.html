@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Agent Dashboard</title>
+  <link rel="stylesheet" href="delivery.css" />
+</head>
+<body>
+  <header>
+    <h1>Delivery Dashboard</h1>
+  </header>
+
+
+  
+  <main>
+    <section class="order-card">
+      <div class="order-header">
+        <h2>Order ID: #123456</h2>
+        <span class="cod">COD</span>
+      </div>
+      <div class="customer-info" id="deliveryCustomerInfo">
+  <!-- Loaded by JS -->
+</div>
+
+      <div class="order-items-box">
+  <h3>Ordered Items</h3>
+ <div class="order-column">
+  <h4>🛒 Ordered Products</h4>
+  <div id="orderedItems"></div>
+</div>
+
+
+
+
+<section class="status-update">
+  <h3>Update Order Status</h3>
+  <button onclick="updateStatus('Packed')">Mark as Packed</button>
+  <button onclick="updateStatus('Shipped')">Mark as Shipped</button>
+  <button onclick="updateStatus('Out for Delivery')">Out for Delivery</button>
+  <button onclick="updateStatus('Delivered')">Delivered</button>
+</section>
+
+
+    <section id="deliveryProducts" class="delivery-products">
+  <!-- Ordered items will appear here -->
+</section>
+
+
+      <div class="otp-section">
+        <input type="text" placeholder="Enter OTP" id="otpInput" />
+        <button id="verifyBtn">Verify & Deliver</button>
+      </div>
+
+      <div class="actions">
+        <button onclick="callCustomer()">Call Customer</button>
+        <button onclick="openMap()">Navigate</button>
+        <button class="fail" onclick="markFailed()">Mark as Failed</button>
+      </div>
+    </section>
+    <div class="delivery-layout">
+  <div class="delivery-container">
+    <h2>Delivery Agent Panel</h2>
+    <div class="status-buttons">
+      <button class="status-btn" onclick="sendStatus('Found a nearby shop')">Found a nearby shop</button>
+      <button class="status-btn" onclick="sendStatus('It may get late')">It may get late</button>
+      <button class="status-btn" onclick="sendStatus('Sorry, I could not catch up')">Sorry, I could not catch up</button>
+    </div>
+    <div class="custom-message">
+      <textarea id="customMsg" placeholder="Type a message to customer..."></textarea>
+      <button onclick="sendCustomMessage()">Send Message</button>
+    </div>
+  </div>
+
+  <!-- CUSTOMER FEEDBACK SECTION -->
+ <!-- CUSTOMER FEEDBACK TOGGLE ICON -->
+<div class="feedback-icon" onclick="toggleFeedback()">💡</div>
+
+<!-- CUSTOMER FEEDBACK BOX (HIDDEN INITIALLY) -->
+<div class="customer-feedback-box" id="customerFeedbackBox">
+  <div class="feedback-header">
+    Customer Messages
+    <span class="close-feedback" onclick="toggleFeedback()">❌</span>
+  </div>
+  <div class="feedback-body" id="customerReplies"></div>
+</div>
+
+
+    <div id="toast"></div>
+  </main>
+
+<script>
+    // delivery.js
+
+document.getElementById("verifyBtn").addEventListener("click", () => {
+  const otpInput = document.getElementById("otpInput").value.trim();
+
+  if (otpInput === "1234") {
+    showToast("✅ Delivery Confirmed!");
+    document.getElementById("verifyBtn").disabled = true;
+    document.getElementById("verifyBtn").textContent = "Delivered";
+    document.getElementById("verifyBtn").style.backgroundColor = "#6c757d";
+  } else {
+    showToast("❌ Incorrect OTP");
+  }
+});
+
+function callCustomer() {
+  window.location.href = "tel:+919876543210";
+}
+
+function openMap() {
+  const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=12+MG+Road+Bengaluru`;
+  window.open(mapUrl, "_blank");
+}
+
+function markFailed() {
+  const reason = prompt("Enter reason for failure:");
+  if (reason) {
+    showToast("❗Marked as Failed: " + reason);
+  }
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  toast.style.opacity = "1";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+function updateStatus(stage) {
+ localStorage.setItem("orderStatus", stage);
+if (stage === "Delivered") {
+  localStorage.removeItem("cart");
+  showToast("🧹 Cart Cleared After Delivery");
+}
+  showToast(`✅ Status Updated: ${stage}`);
+}
+
+// customer info load
+const order = JSON.parse(localStorage.getItem("placedOrder"));
+const addr = order?.address;
+const customerInfoDiv = document.getElementById("deliveryCustomerInfo");
+
+if (addr) {
+  customerInfoDiv.innerHTML = `
+    <h3>Customer: ${addr.name}</h3>
+    <p>📍 ${addr.area}, ${addr.city}, ${addr.state} - ${addr.pincode}</p>
+    <p>📞 ${addr.phone}</p>
+  `;
+}
+// merge popup 
+window.addEventListener("DOMContentLoaded", () => {
+  const placedOrder = JSON.parse(localStorage.getItem("placedOrder") || "{}");
+  const original = placedOrder.originalItems || [];
+  const merged = placedOrder.mergedItems || [];
+  const gstRate = placedOrder.gstRate || 0.05;
+
+  const orderedItemsDiv = document.getElementById("orderedItems");
+  const mergedItemsDiv = document.getElementById("mergedItems");
+  const orderSummary = document.getElementById("orderSummary");
+
+  if (orderedItemsDiv && original.length > 0) {
+    orderedItemsDiv.innerHTML = "<ul>" + original.map(item => `
+      <li>${item.qty || 1}x ${item.name} – ₹${item.price}</li>
+    `).join("") + "</ul>";
+  }
+
+  if (mergedItemsDiv && merged.length > 0) {
+    mergedItemsDiv.innerHTML = "<ul>" + merged.map(item => `
+      <li>${item.qty || 1}x ${item.name} – ₹${item.price}</li>
+    `).join("") + "</ul>";
+  }
+
+  let total = 0;
+  original.forEach(i => total += (i.qty || 1) * i.price);
+  merged.forEach(i => total += (i.qty || 1) * i.price);
+
+  const gst = +(total * gstRate).toFixed(2);
+  const final = +(total + gst).toFixed(2);
+
+  const summaryHTML = `
+    <p><strong>Total (before GST):</strong> ₹${total}</p>
+    <p><strong>GST (${(gstRate * 100).toFixed(0)}%):</strong> ₹${gst}</p>
+    <p><strong>Final Total:</strong> ₹${final}</p>
+  `;
+
+  if (orderSummary) orderSummary.innerHTML = summaryHTML;
+});
+
+function sendStatus(status) {
+  const updates = JSON.parse(localStorage.getItem('deliveryUpdates')) || [];
+  updates.push({ type: 'status', message: status });
+  localStorage.setItem('deliveryUpdates', JSON.stringify(updates));
+  alert("Status sent: " + status);
+}
+
+function sendCustomMessage() {
+  const msg = document.getElementById('customMsg').value.trim();
+  if (msg) {
+    const updates = JSON.parse(localStorage.getItem('deliveryUpdates')) || [];
+    updates.push({ type: 'message', message: msg });
+    localStorage.setItem('deliveryUpdates', JSON.stringify(updates));
+    document.getElementById('customMsg').value = '';
+    alert("Message sent to customer.");
+  }
+}
+setInterval(() => {
+  const feedback = JSON.parse(localStorage.getItem('customerReplies')) || [];
+  const container = document.getElementById('customerReplies');
+  container.innerHTML = "";
+  feedback.forEach(msg => {
+    const p = document.createElement('p');
+    p.textContent = msg;
+    container.appendChild(p);
+  });
+}, 3000);
+
+function toggleFeedback() {
+  const box = document.getElementById("customerFeedbackBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+
+</script>
+
+</body>
+</html>

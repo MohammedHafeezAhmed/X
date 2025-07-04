@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>X-Cart - Food & Restaurant</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+
+  
+  <!-- Toast Notification -->
+  <div id="toast" style="position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; display: none; z-index: 1000;"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="index.html" class="logo">🍽️ X-Cart</a>
+      <div class="search-center">
+        <div id="search-wrapper">
+          <i class="search-icon fas fa-search"></i>
+          <input type="text" id="search" placeholder="Search" />
+          <button id="search-button">Search</button>
+        </div>
+        <p id="no-result" style="display: none; color: red; margin-top: 8px;">No product found.</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="restaurant.html">X-Store</a></li>
+        <li><a href="#" id="addressNavv">Address</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="tel:+917019201902" class="call-btn"><i class="fas fa-phone-alt"></i> Call</a></li>
+       <li><a href="#" id="logoutLink" class="logout-btn">Logout</a></li>
+      </ul>
+      <div class="hamburger">&#9776;</div>
+    </nav>
+  </header>
+
+ <section class="hero-slider">
+  <div class="slide active">
+    <img src="images/t/h1.jpg" alt="Slide 1">
+    
+  </div>
+  <div class="slide">
+    <img src="images/t/h2.jpg" alt="Slide 2">
+    
+  </div>
+  <div class="slide">
+    <img src="images/t/h4.jpg" alt="Slide 3">
+  </div>
+
+  <div class="slide">
+    <img src="images/t/h3.jpg" alt="Slide 3">
+  </div>
+  
+  <div class="slide">
+    <img src="images/t/h5.jpg" alt="Slide 3">
+  </div>
+
+  <div class="slide">
+    <img src="images/t/h6.jpg" alt="Slide 3">
+  </div>
+
+  <div class="nav left">&#9664;</div>
+  <div class="nav right">&#9654;</div>
+  <div class="dots"></div>
+</section>
+
+
+
+ <div class="nav-items">
+    <a href="#" class="nav-item">
+      <img src="images/fruitsandveg.jpeg" alt="Kitchen" />
+     
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/attariceoildal.png" alt="Mobiles" />
+      
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/cafe.png" alt="Fashion" />
+      
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/dairybreadegg.png" alt="Electronics" />
+      
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/icecreams.png" alt="Home" />
+      
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/makeup.png" alt="Appliances" />
+      
+    </a>
+    <a href="#" class="nav-item">
+      <img src="images/pharmacy.png" alt="Appliances" />
+      
+    </a>
+  </div>
+
+
+
+
+<!-- Login Modal -->
+<div id="loginModal" class="login-modal" style="display: none;">
+  <div class="login-box">
+    <button onclick="document.getElementById('loginModal').style.display='none'" style="position:absolute; top:1px; right:15px; border:none; font-size:40px; background:none; cursor:pointer; color: #e74c3c; ">×</button>
+    <h2>Welcome to XCart</h2>
+    <p>Please sign in to continue</p>
+    <input type="text" id="loginUsername" placeholder="Username" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button id="loginSubmit">Sign In</button>
+    <p id="loginError" style="color: red; display: none; margin-top: 10px;">Invalid login. Try again.</p>
+  </div>
+</div>
+
+
+  <!-- Menu Section (shortened for brevity) -->
+ <section class="menu" id="menu">
+  <h2 class="section-title">Trending In X-Cart</h2>
+  <div class="menu-items">
+    
+    <!-- Item Start -->
+    <div class="menu-item product">
+      <img src="images/Bisleri.jpg" alt="Coke" />
+      <h3>Bisleri</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/Aashirvaa.jpg" alt="Coke" />
+      <h3>Aashirvaad</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/Choco-Chip-Muffins.jpg" alt="Coke" />
+      <h3>Muffins</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/str.jpg" alt="Coke" />
+      <h3>strawberry</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/Mango-Badami.jpg" alt="Coke" />
+      <h3>Mango</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/Fresh-Potato.jpg" alt="Coke" />
+      <h3>Potato</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="menu-item product">
+      <img src="images/Choco-Lava-Cake.jpg" alt="Coke" />
+      <h3>Coke</h3>
+      <p class="price"><s>₹70</s> ₹49</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    
+    
+    <!-- Add more items below by copying the block above -->
+
+  </div>
+</section>
+
+
+ <div class="gallery">
+  <div class="gallery-wrapper">
+    <h2 class="section-title">Gallery</h2>
+    <div class="gallery-grid">
+      <img src="images/gal1.jpg" alt="">
+      <img src="images/gal3.jpg" alt="">
+      <img src="images/gal4.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+</div>
+
+    </div>
+  </section>
+
+  <!-- Address List Modal -->
+  <div id="addressListModal" class="login-modal" style="display: none;">
+    <div class="login-box" style="max-height: 90vh; overflow-y: auto; position: relative;">
+      <div style="text-align: right;">
+        <button onclick="document.getElementById('addressListModal').style.display='none'" style="border: none; background: transparent; font-size: 20px; cursor: pointer;">&times;</button>
+      </div>
+      <h2>Your Addresses</h2>
+      <button id="addNewAddressBtn" style="margin-bottom: 10px;">➕ Add Address</button>
+      <button onclick="document.getElementById('addressListModal').style.display='none'">Close</button>
+      <div id="addressListContent" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- Address Entry Modal -->
+  <div id="addressModal" class="modal" style="display:none;">
+    <div class="modal-content" style="position: relative;">
+      <button class="modal-close" onclick="document.getElementById('addressModal').style.display='none'">&times;</button>
+      <h2>Add New Address</h2>
+      <div id="addressError" style="color:red; display:none;">Please fill all required fields</div>
+
+      <label>Name:</label>
+      <input type="text" id="custName" required />
+
+      <label>Phone:</label>
+      <input type="tel" id="custPhone" required />
+
+      <label>Alternate Phone:</label>
+      <input type="tel" id="custAltPhone" />
+
+      <label>Pincode:</label>
+      <input type="text" id="custPincode" required />
+
+      <label>State:</label>
+      <input type="text" id="custState" required />
+
+      <label>City:</label>
+      <input type="text" id="custCity" required />
+
+      <label>Area/Locality:</label>
+      <input type="text" id="custArea" required />
+
+      <label>Landmark (optional):</label>
+      <input type="text" id="custLandmark" />
+
+      <label>Address Type:</label>
+      <select id="locationType">
+        <option value="manual">Manual</option>
+        <option value="live">Live</option>
+      </select>
+
+      <label>Full Address:</label>
+      <textarea id="custLocation" required></textarea>
+
+      <button id="detectLocationBtn">📍 Use Live Location</button>
+      <button id="saveAddressBtn">Save Address</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>We are passionate about delivering quality food and exceptional experiences.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="bestselling.html">Best Selling</a></li>
+          <li><a href="popular.html">Popular</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul>
+          <li>Email: info@restaurant.com</li>
+          <li>Phone: +91 701920190*</li>
+          <li>Address: 123 Food St, Culinary City</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <p>&copy; 2025 X-Cart.com | All rights reserved<br>By Official Mohammed Hafeez Ahmed.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>

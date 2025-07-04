@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <body style="background-color: rgba(207, 155, 168, 0.61);">
+
+  <header class="nvcart">
+  <a href="index.html" class="nvcart-logo">🍽️ X-Cart</a>
+  <div class="nvcart-title">Your Cart</div>
+  <a href="restaurant.html" class="nvcart-link">Back to Store</a>
+  </header>
+
+<div id="select-address-container" style="margin: 20px auto; width: 350px; text-align: center;">
+  <label for="addressDropdown"><strong>Select Delivery Address:</strong></label><br>
+  <select id="addressDropdown" style="margin-top: 10px; width: 300px;"></select>
+</div>
+<div id="orderSuccessAnimation" class="success-overlay">
+  <div class="tick-box">
+    <svg viewBox="0 0 52 52" class="tick-svg">
+      <circle class="tick-circle" cx="26" cy="26" r="25" fill="none"/>
+      <path class="tick-check" fill="none" d="M14 27l8 8 16-16"/>
+    </svg>
+    <p class="success-text">Order Placed Successfully!</p>
+  </div>
+</div>
+<!-- DELIVERY STATUS NOTIFICATIONS -->
+<div id="deliveryNotification" class="notification-box">
+  <p id="notificationMsg"></p>
+  <div class="notification-actions">
+    <button onclick="respondToDelivery('Yes')">✔ Yes</button>
+    <button onclick="respondToDelivery('No')">❌ No</button>
+  </div>
+</div>
+
+<!-- CHAT BOX -->
+<!-- CHAT ICON (Floating Circle) -->
+<div class="chat-toggle-icon" onclick="toggleChatBox()">💬</div>
+
+<!-- CHAT BOX -->
+<div class="chat-box" id="chatBox" style="display: none;">
+  <div class="chat-header">
+    Chat with Delivery Agent
+    <span class="close-chat" onclick="toggleChatBox()">❌</span>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Type your message...">
+    <button onclick="sendCustomerMessage()">Send</button>
+  </div>
+</div>
+
+
+<main>
+  <div class="cart-layout">
+  <!-- LEFT COLUMN -->
+  <div class="left-column">
+   <section class="cart-items-wrapper">
+  <div class="cart-box">
+    <div id="cartItems"></div>
+  </div>
+</section>
+
+
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-column">
+    <section class="summary">
+      <div class="checkout-row">
+        <div class="button-group">
+          <button id="codBtn" class="pay-btn">COD</button>
+          <button id="onlineBtn" class="pay-btn">Online</button>
+          <button id="placeOrderBtn" class="place-order-btn">Place Order</button>
+        </div>
+        <div class="cart-total">
+          <strong>Total : ₹<span id="totalAmount">0</span></strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="tracking-box">
+      <h2>Order Status</h2>
+      <p>Estimated Delivery: <strong id="deliveryDate">Loading...</strong></p>
+      <div class="tracking-steps">
+        <div class="track-step"><div class="circle-icon"></div>Ordered</div>
+        <div class="track-step"><div class="circle-icon"></div>Packed</div>
+        <div class="track-step"><div class="circle-icon"></div>Shipped</div>
+        <div class="track-step"><div class="circle-icon"></div>Out for Delivery</div>
+        <div class="track-step"><div class="circle-icon"></div>Delivered</div>
+      </div>
+    </section>
+
+    <button id="printInvoiceBtn">🧾 Print Invoice</button>
+    <span id="orderPlacedText" class="blinking" style="display: none;">✔ Order Placed</span>
+  </div>
+</div>
+
+<!-- Merge Modal -->
+<div id="mergeModal" class="merge-modal hidden">
+  <div class="merge-content">
+    <span class="close-btn" onclick="closeMergeModal()">&times;</span>
+    <h2>Merge with Previous Order?</h2>
+
+    <!-- Countdown -->
+    <p id="mergeCountdown" style="color:#d9230f; font-weight: bold;">⏳ Merge window: calculating...</p>
+
+    <!-- Show existing order items -->
+    <div id="existingOrderPreview" style="text-align:left;">
+      <strong>Your Existing Order:</strong>
+      <hr>
+      <ul id="existingItemsList" style="list-style-type: none; padding-left: 0;"></ul>
+    </div>
+
+    <div class="merge-buttons">
+      <button onclick="handleMerge(true)">Merge Order</button>
+      <button onclick="handleMerge(false)">New Order</button>
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+  <script>
+// cart.js
+
+// Initial setup
+updateTotal();
+
+// Quantity increase
+const increaseButtons = document.querySelectorAll(".increase");
+increaseButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const qtyEl = btn.previousElementSibling;
+    let qty = parseInt(qtyEl.textContent);
+    qtyEl.textContent = ++qty;
+    updateTotal();
+  });
+});
+
+// Quantity decrease
+const decreaseButtons = document.querySelectorAll(".decrease");
+decreaseButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const qtyEl = btn.nextElementSibling;
+    let qty = parseInt(qtyEl.textContent);
+    if (qty > 1) {
+      qtyEl.textContent = --qty;
+      updateTotal();
+    }
+  });
+});
+
+// Remove item
+const removeButtons = document.querySelectorAll(".remove");
+removeButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.parentElement.remove();
+    updateTotal();
+  });
+});
+
+// Update total
+function updateTotal() {
+  let total = 0;
+
+  document.querySelectorAll(".cart-item").forEach(item => {
+    const priceText = item.querySelector(".details p").textContent;
+    const price = parseFloat(priceText.replace(/[^\d.]/g, ""));
+    const qty = parseInt(item.querySelector(".qty").textContent);
+    total += price * qty;
+  });
+
+  const totalSpan = document.getElementById("totalAmount");
+  if (totalSpan) {
+    totalSpan.textContent = total.toFixed(2);
+  }
+}
+
+
+
+// Toast system
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  toast.style.opacity = "1";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.style.display = "none", 300);
+  }, 2000);
+}
+
+// Estimated Delivery Date (Demo)
+const eta = document.getElementById("deliveryDate");
+const today = new Date();
+const etaDate = new Date(today.setDate(today.getDate() + 2));
+eta.textContent = etaDate.toDateString();
+
+// status icons
+const steps = document.querySelectorAll(".track-step");
+const savedStage = localStorage.getItem("orderStatus");
+const stageList = ["Ordered", "Packed", "Shipped", "Out for Delivery", "Delivered"];
+let current = 0;
+if (savedStage) {
+  current = stageList.indexOf(savedStage) + 1;
+}
+
+steps.forEach((step, index) => {
+  const circle = step.querySelector(".circle-icon");
+
+  // Customer can only update "Ordered"
+  if (index === 0 && stageList[0] === "Ordered") {
+    circle.classList.add("updated");
+    step.classList.add("active");
+  }
+
+  // Rest stages only updated by delivery agent
+  if (index > 0 && index < current) {
+    circle.classList.add("updated");
+    step.classList.add("active");
+  }
+});
+
+
+
+
+setInterval(() => {
+  if (current < steps.length) {
+    steps[current].classList.add("active");
+    current++;
+  }
+}, 1500);
+
+// 🔰 Set default payment mode
+let selectedPaymentMethod = "COD";
+
+// 🔘 Get button elements
+const codBtn = document.getElementById("codBtn");
+const onlineBtn = document.getElementById("onlineBtn");
+
+// ✅ Update UI to reflect selected payment mode
+function updatePaymentUI() {
+  codBtn.style.background = selectedPaymentMethod === "COD" ? "#1dbf73" : "white";
+  codBtn.style.color = selectedPaymentMethod === "COD" ? "white" : "#1dbf73";
+  codBtn.style.border = "2px solid #1dbf73";
+
+  onlineBtn.style.background = selectedPaymentMethod === "Online" ? "#1dbf73" : "white";
+  onlineBtn.style.color = selectedPaymentMethod === "Online" ? "white" : "#1dbf73";
+  onlineBtn.style.border = "2px solid #1dbf73";
+}
+
+// 🖱️ Event listeners
+codBtn.addEventListener("click", () => {
+  selectedPaymentMethod = "COD";
+  updatePaymentUI();
+});
+
+onlineBtn.addEventListener("click", () => {
+  selectedPaymentMethod = "Online";
+  updatePaymentUI();
+});
+
+// Initialize UI
+updatePaymentUI();
+
+
+document.getElementById("placeOrderBtn").addEventListener("click", () => {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const addressList = JSON.parse(localStorage.getItem("customerInfoList") || "[]");
+
+  // If user selected something, use it. Otherwise, use default.
+  let selectedAddressIndex = document.getElementById("addressDropdown")?.value;
+  let selectedAddress = addressList[selectedAddressIndex];
+
+  // Fallback to first/default if only one exists
+  if (!selectedAddress && addressList.length > 0) {
+    selectedAddress = addressList.find(a => a.default) || addressList[0];
+  }
+
+const placedOrder = {
+  items: cart,
+  address: selectedAddress,
+  paymentMode: selectedPaymentMethod  // ✅ Save payment mode
+};
+
+localStorage.setItem("placedOrder", JSON.stringify(placedOrder));
+
+
+  // Show animation — fun button ✅
+  showOrderSuccessAnimation();
+});
+
+
+// invoice
+document.getElementById("printInvoiceBtn").addEventListener("click", () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const placedOrder = JSON.parse(localStorage.getItem("placedOrder")) || {};
+  const customer = placedOrder.address || {};
+  const paymentMode = placedOrder.paymentMode || "N/A";
+
+
+  const invoiceWindow = window.open("", "_blank");
+  const currentDate = new Date().toLocaleDateString();
+
+  let content = `
+    <style>
+      body { font-family: Arial; padding: 20px; }
+      h1 { text-align: center; }
+      table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+      th { background: #f2f2f2; }
+      .header, .footer { text-align: center; margin-bottom: 10px; }
+      .footer { font-size: 0.9rem; margin-top: 20px; color: gray; }
+    </style>
+
+    <div class="header">
+      <h1>X-CART</h1>
+      <p>GSTIN: 29ABCDE1234F1Z5 | CIN: U12345KA2025PTC000001</p>
+      <p>#45, 1st Floor, Main Road, Bengaluru, KA - 560001</p>
+      <p>Phone: 080-12345678 | Email: support@xcart.com</p>
+    </div>
+
+    <div>
+      <strong>Invoice No:</strong> INV123456<br><br>
+      <strong>Order ID:</strong> #ORD789012<br><br>
+      <strong>Date:</strong> ${currentDate}<br><br>
+     <strong>Payment Mode:</strong> ${paymentMode}
+    </div>
+
+    <div style="margin-top: 10px;">
+      <strong>Customer:</strong><br>
+      ${customer.name || "N/A"}<br>
+      ${customer.address || "N/A"}<br>
+      Phone: ${customer.phone || "N/A"}
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Qty</th><th>Rate</th><th>Subtotal</th></tr>
+      </thead>
+      <tbody>`;
+
+  let total = 0;
+  cart.forEach(item => {
+    let sub = item.qty * item.price;
+    total += sub;
+    content += `<tr>
+      <td>${item.name}</td>
+      <td>${item.qty}</td>
+      <td>₹${item.price}</td>
+      <td>₹${sub}</td>
+    </tr>`;
+  });
+
+  const gstRate = placedOrder.gstRate || 0.05;
+  const gst = (total * gstRate).toFixed(2);
+  const grand = (total + parseFloat(gst)).toFixed(2);
+
+  content += `</tbody></table>
+    <div style="margin-top: 15px;">
+      <p><strong>Subtotal:</strong> ₹${total.toFixed(2)}</p>
+     <p><strong>GST (${(gstRate * 100).toFixed(0)}%):</strong> ₹${gst}</p>
+      <p><strong>Grand Total:</strong> ₹${grand}</p>
+    </div>
+
+    <div class="footer">
+      <p>This is a computer-generated invoice.</p>
+      <p>Thank you for shopping with X‑Cart!</p>
+    </div>
+  `;
+
+  invoiceWindow.document.write(content);
+  invoiceWindow.document.close();
+  invoiceWindow.print();
+});
+
+
+
+// order placed text js
+const orderPlacedText = document.getElementById("orderPlacedText");
+const orderStatus = localStorage.getItem("orderStatus");
+
+if (orderStatus === "Ordered") {
+  orderPlacedText.style.display = "inline-block";
+} else if (orderStatus === "Delivered") {
+  orderPlacedText.style.display = "none";
+}
+// product to cart push
+const cartItemsContainer = document.getElementById("cartItems");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function renderCart() {
+  cartItemsContainer.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    const cartItem = document.createElement("div");
+    cartItem.className = "cart-item";
+    cartItem.innerHTML = `
+      <img src="${item.image}" alt="Product">
+      <div class="details">
+        <h3>${item.name}</h3>
+        <p>Price: ₹${item.price}</p>
+        <div class="quantity">
+          <button class="decrease">-</button>
+          <span class="qty">${item.qty}</span>
+          <button class="increase">+</button>
+        </div>
+      </div>
+      <button class="remove">✖</button>
+    `;
+
+    cartItem.querySelector(".increase").onclick = () => {
+      cart[index].qty++;
+      updateCart();
+    };
+
+    cartItem.querySelector(".decrease").onclick = () => {
+      if (cart[index].qty > 1) {
+        cart[index].qty--;
+      } else {
+        cart.splice(index, 1);
+      }
+      updateCart();
+    };
+
+    cartItem.querySelector(".remove").onclick = () => {
+      cart.splice(index, 1);
+      updateCart();
+    };
+
+    cartItemsContainer.appendChild(cartItem);
+  });
+
+  updateTotal(); // Total update here
+}
+
+function updateCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+}
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll(".cart-item").forEach(item => {
+    const price = parseFloat(item.querySelector(".details p").textContent.replace(/[^\d.]/g, ""));
+    const qty = parseInt(item.querySelector(".qty").textContent);
+    total += price * qty;
+  });
+  document.getElementById("totalAmount").textContent = total.toFixed(2);
+}
+
+renderCart(); // initial render
+
+// load address dropdown 
+const dropdown = document.getElementById("addressDropdown");
+const addressList = JSON.parse(localStorage.getItem("customerInfoList") || "[]");
+const selectedIndex = addressList.findIndex(addr => addr.default);
+
+dropdown.innerHTML = addressList.map((addr, i) => {
+  const display = `${addr.name} - ${addr.area}, ${addr.city} - ${addr.pincode}`;
+  return `<option value="${i}" ${i === selectedIndex ? "selected" : ""}>${display}</option>`;
+}).join("");
+
+// Save selected address when user changes
+dropdown.addEventListener("change", () => {
+  const selectedAddr = addressList[dropdown.value];
+  localStorage.setItem("selectedDeliveryAddress", JSON.stringify(selectedAddr));
+});
+
+// Also set it immediately on load
+if (selectedIndex !== -1) {
+  localStorage.setItem("selectedDeliveryAddress", JSON.stringify(addressList[selectedIndex]));
+}
+
+// animation on click place order
+function showOrderSuccessAnimation() {
+  const overlay = document.getElementById("orderSuccessAnimation");
+
+  // Reset SVG path animations
+  const circle = overlay.querySelector(".tick-circle");
+  const check = overlay.querySelector(".tick-check");
+
+  circle.style.strokeDashoffset = 157;
+  check.style.strokeDashoffset = 36;
+  void circle.offsetWidth; // force reflow
+
+  overlay.style.display = "flex";
+
+  // Restart animations
+  circle.style.animation = "drawCircle 0.6s ease-out forwards";
+  check.style.animation = "drawCheck 0.4s 0.6s ease-out forwards";
+
+  // Optional auto-close
+  setTimeout(() => {
+    overlay.style.display = "none";
+  }, 4000);
+}
+
+//*** merge popup js
+const mergeModal = document.getElementById("mergeModal");
+const PLACE_ORDER_BTN = document.getElementById("placeOrderBtn");
+
+PLACE_ORDER_BTN.addEventListener("click", () => {
+  const lastTime = parseInt(localStorage.getItem("lastOrderTime") || 0);
+  const now = Date.now();
+  const diff = now - lastTime;
+
+  if (lastTime && diff < 600000) {
+    // less than 10 minutes old
+   openMergeModal();
+  } else {
+    handleMerge(false); // Proceed as new order
+  }
+});
+function openMergeModal() {
+  const modal = document.getElementById("mergeModal");
+  const itemList = document.getElementById("existingItemsList");
+  const countdown = document.getElementById("mergeCountdown");
+
+  const lastOrder = JSON.parse(localStorage.getItem("placedOrder")) || {};
+  const existingItems = lastOrder.originalItems || lastOrder.items || [];
+
+  itemList.innerHTML = "";
+  existingItems.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.qty || 1}x ${item.name} – ₹${item.price}`;
+    itemList.appendChild(li);
+  });
+
+  const lastTime = parseInt(localStorage.getItem("lastOrderTime") || 0);
+  function updateCountdown() {
+    const now = Date.now();
+    const remaining = Math.max(0, 600000 - (now - lastTime));
+
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    countdown.textContent = `⏳ Merge window: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')} left`;
+
+    if (remaining > 0) setTimeout(updateCountdown, 1000);
+    else {
+      closeMergeModal();
+      alert("⛔ Merge window expired. Proceeding with new order.");
+      handleMerge(false);
+    }
+  }
+
+  updateCountdown();
+  modal.classList.remove("hidden");
+}
+
+
+function closeMergeModal() {
+  mergeModal.classList.add("hidden");
+}
+
+function handleMerge(isMerge) {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const addressList = JSON.parse(localStorage.getItem("customerInfoList") || "[]");
+  let selectedAddressIndex = document.getElementById("addressDropdown")?.value;
+  let selectedAddress = addressList[selectedAddressIndex];
+
+  if (!selectedAddress && addressList.length > 0) {
+    selectedAddress = addressList.find(a => a.default) || addressList[0];
+  }
+
+  const oldOrder = JSON.parse(localStorage.getItem("placedOrder") || "{}");
+
+  let placedOrder = {
+    address: selectedAddress,
+    paymentMode: selectedPaymentMethod,
+    isMerged: isMerge,
+    gstRate: isMerge ? 0.07 : 0.05,
+    originalItems: [],
+    mergedItems: []
+  };
+
+  if (isMerge && Array.isArray(oldOrder.items)) {
+    const mergedItems = [];
+
+    cart.forEach(newItem => {
+      const matchingOldItem = oldOrder.items.find(i => i.name === newItem.name);
+      if (!matchingOldItem) {
+        mergedItems.push({ ...newItem });
+      } else {
+        const extraQty = newItem.qty - matchingOldItem.qty;
+        if (extraQty > 0) {
+          mergedItems.push({ ...newItem, qty: extraQty });
+        }
+      }
+    });
+
+    placedOrder.originalItems = oldOrder.items;
+    placedOrder.mergedItems = mergedItems;
+  } else {
+    placedOrder.originalItems = cart;
+  }
+
+  localStorage.setItem("placedOrder", JSON.stringify(placedOrder));
+  localStorage.setItem("lastOrderTime", Date.now().toString());
+  mergeModal.classList.add("hidden");
+  showOrderSuccessAnimation();
+}
+
+// Load delivery updates every 3 seconds
+setInterval(() => {
+  const updates = JSON.parse(localStorage.getItem('deliveryUpdates')) || [];
+  const shown = JSON.parse(localStorage.getItem('shownUpdates')) || [];
+
+  updates.forEach((update, index) => {
+   if (!shown.includes(index)) {
+  if (update.type === 'status') {
+    showNotification(update.message);
+    addMessage('Delivery Agent', update.message); // ← ADD THIS LINE
+  } else if (update.type === 'message') {
+    addMessage('Delivery Agent', update.message);
+  }
+  shown.push(index);
+}
+
+  });
+
+  localStorage.setItem('shownUpdates', JSON.stringify(shown));
+}, 3000);
+
+// Show status notification
+function showNotification(msg) {
+  const box = document.getElementById('deliveryNotification');
+  document.getElementById('notificationMsg').textContent = msg;
+  box.style.display = 'block';
+}
+
+// Handle yes/no response
+function respondToDelivery(response) {
+  addMessage('You', `Response to agent: ${response}`);
+  document.getElementById('deliveryNotification').style.display = 'none';
+
+  // Save customer feedback
+  const feedback = JSON.parse(localStorage.getItem('customerReplies')) || [];
+  feedback.push(`Replied: ${response}`);
+  localStorage.setItem('customerReplies', JSON.stringify(feedback));
+}
+
+
+// Customer sends message
+function sendCustomerMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (msg) {
+    addMessage('You', msg);
+
+    // Send to delivery agent
+    const updates = JSON.parse(localStorage.getItem('deliveryUpdates')) || [];
+    updates.push({ type: 'message', message: msg });
+    localStorage.setItem('deliveryUpdates', JSON.stringify(updates));
+
+    // Also record as customer feedback
+    const feedback = JSON.parse(localStorage.getItem('customerReplies')) || [];
+    feedback.push(`Message: ${msg}`);
+    localStorage.setItem('customerReplies', JSON.stringify(feedback));
+
+    input.value = '';
+  }
+}
+
+// Add message to chat
+function addMessage(sender, msg) {
+  const chat = document.getElementById('chatMessages');
+  const p = document.createElement('p');
+  p.innerHTML = `<strong>${sender}:</strong> ${msg}`;
+  chat.appendChild(p);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function toggleChatBox() {
+  const chatBox = document.getElementById("chatBox");
+  chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
+}
+
+  </script>
+</body>
+</html>
